@@ -35,6 +35,7 @@ Diagnostics:
       readability-braces-around-statements,
       readability-identifier-length,
       modernize-avoid-c-arrays,
-      misc-non-private-member-variables-in-classes
+      misc-non-private-member-variables-in-classes,
+      llvm-prefer-static-over-anonymous-namespace
       ]
   UnusedIncludes: Strict
