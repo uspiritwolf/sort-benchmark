@@ -121,7 +121,8 @@ auto operator delete(void* ptr) noexcept -> void
 	std::free(ptr);
 }
 
-auto operator delete(void* ptr, std::align_val_t al) noexcept -> void
+auto operator delete(void* ptr, std::align_val_t alignment) noexcept -> void
 {
+	std::ignore = alignment;
 	std::free(ptr);
 }
