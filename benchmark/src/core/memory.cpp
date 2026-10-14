@@ -10,6 +10,8 @@ namespace
 	class MemoryManager : public benchmark::MemoryManager
 	{
 	public:
+		bool is_running = false;
+		bool is_measuring_section = false;
 		int64_t num_allocs;
 		int64_t max_bytes_used;
 
@@ -17,6 +19,8 @@ namespace
 		{
 			num_allocs = 0;
 			max_bytes_used = 0;
+
+			is_running = true;
 
 			malloc_trim(0);
 		}
@@ -26,13 +30,18 @@ namespace
 			result.num_allocs = num_allocs;
 			result.max_bytes_used = max_bytes_used;
 
+			is_running = false;
+
 			malloc_trim(0);
 		}
 
 		void allocate(size_t bytes)
 		{
-			num_allocs++;
-			max_bytes_used += static_cast<int64_t>(bytes);
+			if (is_running && is_measuring_section)
+			{
+				num_allocs++;
+				max_bytes_used += static_cast<int64_t>(bytes);
+			}
 		}
 	};
 
@@ -58,7 +67,23 @@ auto get_max_bytes_used() -> int64_t
 	return g_memory_manager ? g_memory_manager->max_bytes_used : 0;
 }
 
-auto collect_memory_usage(benchmark::State& state, benchmark::Counter::Flags flags) -> void
+auto mem_begin_measuring_section() -> void
+{
+	if (g_memory_manager)
+	{
+		g_memory_manager->is_measuring_section = true;
+	}
+}
+
+auto mem_end_measuring_section() -> void
+{
+	if (g_memory_manager)
+	{
+		g_memory_manager->is_measuring_section = false;
+	}
+}
+
+auto fill_memory_usage(benchmark::State& state, benchmark::Counter::Flags flags) -> void
 {
 	state.counters["avg_memory_usage"] = benchmark::Counter(
 		static_cast<double>(get_max_bytes_used()),
