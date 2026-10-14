@@ -1,0 +1,40 @@
+If:
+  PathMatch: [benchmark/src/.*]
+
+CompileFlags:
+  Add:
+    - -Wdocumentation
+    - -Wdocumentation-pedantic
+    - -Werror
+    - -Wall
+    - -Wextra
+    - -Wpedantic
+    - -fno-exceptions
+    - -Wno-c99-extensions
+    - -Wno-c23-extensions
+    - -Wno-language-extension-token
+    - -Wno-microsoft-enum-value
+    - -Wunused-private-field
+    - -Wunused-variable
+
+Diagnostics:
+  ClangTidy:
+    Add: [
+      bugprone-*,
+      performance-*,
+      readability-*,
+      clang-analyzer-*,
+      modernize-*,
+      concurrency-*,
+      llvm-*,
+      cert-*,
+      misc-*
+      ]
+    Remove: [
+      readability-uppercase-literal-suffix,
+      readability-braces-around-statements,
+      readability-identifier-length,
+      modernize-avoid-c-arrays,
+      misc-non-private-member-variables-in-classes
+      ]
+  UnusedIncludes: Strict

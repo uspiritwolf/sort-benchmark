@@ -1,0 +1,60 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-vscode.cpptools-extension-pack",
+			"ms-vscode.cmake-tools",
+			"llvm-vs-code-extensions.lldb-dap",
+			"llvm-vs-code-extensions.vscode-clangd",
+			"vadimcn.vscode-lldb"
+		]
+	},
+	"settings": {
+		"C_Cpp.intelliSenseEngine": "disabled",
+		"cmake.copyCompileCommands": "${workspaceFolder}/.build/compile_commands.json",
+		"cmake.buildArgs": [
+			"--parallel"
+		],
+		"cmake.useCMakePresets": "always",
+		"cmake.configureOnOpen": true,
+		"cmake.debugConfig": {
+			"type": "lldb"
+		},
+		"clangd.enable": true,
+		"clangd.arguments": [
+			"--background-index",
+			"--header-insertion=never",
+			"--compile-commands-dir=${workspaceFolder}/.build"
+		],
+		"editor.insertSpaces": false,
+		"editor.detectIndentation": true,
+		"editor.formatOnSave": true,
+		"files.exclude": {
+			"**/.git": true,
+			"**/.build": true
+		},
+		"files.eol": "\n",
+		"files.insertFinalNewline": true,
+		"lldb-dap.serverMode": true
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch (LLDB)",
+				"type": "lldb",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {},
+				"console": "integratedTerminal"
+			}
+		]
+	}
+}
