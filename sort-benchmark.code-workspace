@@ -46,14 +46,21 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
+				"name": "Launch (cppdbg)",
+				"type": "cppdbg",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+			},
+			{
 				"name": "Launch (CodeLLDB)",
 				"type": "lldb",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [],
 				"cwd": "${command:cmake.launchTargetDirectory}",
-				"env": {},
-				"console": "integratedTerminal"
+				"env": {}
 			},
 			{
 				"name": "Launch (lldb-dap)",
@@ -62,8 +69,29 @@
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [],
 				"cwd": "${command:cmake.launchTargetDirectory}",
-				"env": {},
-				"console": "integratedTerminal"
+				"env": {}
+			},
+			{
+				"name": "Launch (bubble_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=bubble_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
+			},
+			{
+				"name": "Launch (selection_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=selection_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
 			}
 		]
 	}
