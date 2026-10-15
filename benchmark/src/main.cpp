@@ -4,7 +4,6 @@
 
 auto main(int argc, char** argv) -> int
 {
-
 	benchmark::MaybeReenterWithoutASLR(argc, argv);
 
 	benchmark::RegisterMemoryManager(get_default_mem_mgr());

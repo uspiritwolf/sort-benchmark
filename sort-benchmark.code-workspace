@@ -23,7 +23,7 @@
 		"cmake.useCMakePresets": "always",
 		"cmake.configureOnOpen": true,
 		"cmake.debugConfig": {
-			"type": "lldb"
+			"type": "lldb-dap"
 		},
 		"clangd.enable": true,
 		"clangd.arguments": [
@@ -46,8 +46,18 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Launch (LLDB)",
+				"name": "Launch (CodeLLDB)",
 				"type": "lldb",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {},
+				"console": "integratedTerminal"
+			},
+			{
+				"name": "Launch (lldb-dap)",
+				"type": "lldb-dap",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [],
