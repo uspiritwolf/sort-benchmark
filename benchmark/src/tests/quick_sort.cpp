@@ -12,66 +12,83 @@
 namespace
 {
 	template <typename Iter>
-	void quick_sort_impl(Iter first, Iter last, std::iter_difference_t<Iter> size)
+	struct Partition
 	{
-		struct Partition
+		Iter lower;
+		Iter upper;
+		std::iter_difference_t<Iter> lower_size;
+		std::iter_difference_t<Iter> upper_size;
+	};
+
+	template <typename Iter>
+	auto qs_partition_range(Iter first, Iter last, std::iter_difference_t<Iter> size) -> Partition<Iter>
+	{
+		const auto pivot = *std::next(first, size / 2);
+		Iter lower = first;
+		Iter current = first;
+		Iter upper = last;
+		std::iter_difference_t<Iter> lower_size = 0;
+		std::iter_difference_t<Iter> upper_size = 0;
+
+		while (current != upper)
+		{
+			if (*current < pivot)
+			{
+				std::iter_swap(lower, current);
+				++lower;
+				++current;
+				++lower_size;
+			}
+			else if (pivot < *current)
+			{
+				--upper;
+				std::iter_swap(current, upper);
+				++upper_size;
+			}
+			else
+			{
+				++current;
+			}
+		}
+
+		return { lower, upper, lower_size, upper_size };
+	}
+
+	template <typename Iter>
+	void qs_impl(Iter first, Iter last, std::iter_difference_t<Iter> size)
+	{
+		struct PendingPartition
 		{
 			Iter first;
 			Iter last;
 			std::iter_difference_t<Iter> size;
 		};
 
-		std::vector<Partition> pending;
+		std::vector<PendingPartition> pending;
 		for (;;)
 		{
 			while (size > 1)
 			{
-				const auto pivot = *std::next(first, size / 2);
-				Iter lower = first;
-				Iter current = first;
-				Iter upper = last;
-				std::iter_difference_t<Iter> lower_size = 0;
-				std::iter_difference_t<Iter> upper_size = 0;
-
-				while (current != upper)
-				{
-					if (*current < pivot)
-					{
-						std::iter_swap(lower, current);
-						++lower;
-						++current;
-						++lower_size;
-					}
-					else if (pivot < *current)
-					{
-						--upper;
-						std::iter_swap(current, upper);
-						++upper_size;
-					}
-					else
-					{
-						++current;
-					}
-				}
+				const auto partition = qs_partition_range(first, last, size);
 
 				// Process the smaller partition first to bound pending stack size.
-				if (lower_size < upper_size)
+				if (partition.lower_size < partition.upper_size)
 				{
-					if (upper_size > 1)
+					if (partition.upper_size > 1)
 					{
-						pending.push_back({upper, last, upper_size});
+						pending.push_back({ partition.upper, last, partition.upper_size });
 					}
-					last = lower;
-					size = lower_size;
+					last = partition.lower;
+					size = partition.lower_size;
 				}
 				else
 				{
-					if (lower_size > 1)
+					if (partition.lower_size > 1)
 					{
-						pending.push_back({first, lower, lower_size});
+						pending.push_back({ first, partition.lower, partition.lower_size });
 					}
-					first = upper;
-					size = upper_size;
+					first = partition.upper;
+					size = partition.upper_size;
 				}
 			}
 
@@ -91,7 +108,7 @@ namespace
 	template <typename Iter>
 	void quick_sort(Iter first, Iter last)
 	{
-		quick_sort_impl(first, last, std::distance(first, last));
+		qs_impl(first, last, std::distance(first, last));
 	}
 
 	void run_quick_sort_vector(benchmark::State& state, const std::vector<int>& data)
