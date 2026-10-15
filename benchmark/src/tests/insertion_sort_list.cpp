@@ -6,7 +6,9 @@
 #include <cassert>
 #include <iterator>
 #include <list>
+#include <numeric>
 #include <random>
+#include <ranges>
 
 namespace
 {
@@ -39,17 +41,12 @@ namespace
 		}
 	}
 
-	void insertion_sort_list(benchmark::State& state)
+	void run_insertion_sort_list(benchmark::State& state, const std::list<int>& data)
 	{
-		std::mt19937 rng(std::random_device{}());
-
-		std::list<int> origin_data(state.range(0));
-		std::ranges::generate(origin_data, rng);
-
 		for (auto _ : state)
 		{
 			state.PauseTiming();
-			std::list<int> data_copy(origin_data);
+			std::list<int> data_copy(data);
 			state.ResumeTiming();
 
 			mem_begin_measuring_section();
@@ -63,7 +60,41 @@ namespace
 		fill_memory_usage(state, benchmark::Counter::kAvgIterations);
 	}
 
+	void insertion_sort_list(benchmark::State& state)
+	{
+		std::mt19937 rng(std::random_device{}());
+
+		std::list<int> data(state.range(0));
+		std::ranges::generate(data, rng);
+
+		run_insertion_sort_list(state, data);
+	}
+
+	void insertion_sort_list_sorted(benchmark::State& state)
+	{
+		std::list<int> data(state.range(0));
+		std::ranges::iota(data, 0);
+
+		run_insertion_sort_list(state, data);
+	}
+
+	void insertion_sort_list_reverse_sorted(benchmark::State& state)
+	{
+		std::list<int> data(state.range(0));
+		std::ranges::iota(std::views::reverse(data), 0);
+
+		run_insertion_sort_list(state, data);
+	}
+
 	BENCHMARK(insertion_sort_list)
+		->RangeMultiplier(2)
+		->Range(1024, 1024 << 6);
+
+	BENCHMARK(insertion_sort_list_sorted)
+		->RangeMultiplier(2)
+		->Range(1024, 1024 << 6);
+
+	BENCHMARK(insertion_sort_list_reverse_sorted)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6);
 

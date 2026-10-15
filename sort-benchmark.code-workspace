@@ -198,7 +198,7 @@
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=insertion_sort_list/.*"
+					"--benchmark_filter=insertion_sort_list.*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
@@ -209,7 +209,7 @@
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=merge_sort_list/.*"
+					"--benchmark_filter=merge_sort_list.*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
@@ -220,7 +220,7 @@
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=radix_sort_list/.*"
+					"--benchmark_filter=radix_sort_list.*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
