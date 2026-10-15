@@ -158,6 +158,28 @@
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
+			},
+			{
+				"name": "Launch (radix_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=radix_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
+			},
+			{
+				"name": "Launch (intro_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=intro_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
 			}
 		]
 	}
