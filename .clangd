@@ -29,13 +29,15 @@ Diagnostics:
       llvm-*,
       cert-*,
       misc-*
-      ]
+    ]
     Remove: [
       readability-uppercase-literal-suffix,
       readability-braces-around-statements,
       readability-identifier-length,
       modernize-avoid-c-arrays,
       misc-non-private-member-variables-in-classes,
-      llvm-prefer-static-over-anonymous-namespace
-      ]
+      llvm-prefer-static-over-anonymous-namespace,
+      misc-static-assert, cert-dcl03-c,
+      readability-inconsistent-declaration-parameter-name
+    ]
   UnusedIncludes: Strict

@@ -3,6 +3,7 @@
 #include <benchmark/benchmark.h>
 
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <list>
 #include <random>
@@ -48,6 +49,7 @@ namespace
 			mem_begin_measuring_section();
 
 			gnome_sort(data_copy.begin(), data_copy.end());
+			assert(std::ranges::is_sorted(data_copy));
 
 			mem_end_measuring_section();
 		}
@@ -97,6 +99,7 @@ namespace
 			mem_begin_measuring_section();
 
 			gnome_sort(data_copy.begin(), data_copy.end());
+			assert(std::ranges::is_sorted(data_copy));
 
 			mem_end_measuring_section();
 		}
