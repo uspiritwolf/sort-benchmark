@@ -92,6 +92,39 @@
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
+			},
+			{
+				"name": "Launch (insertion_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=insertion_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
+			},
+			{
+				"name": "Launch (gnome_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=gnome_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
+			},
+			{
+				"name": "Launch (quick_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=quick_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
 			}
 		]
 	}
