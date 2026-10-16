@@ -1,5 +1,3 @@
-#include <core/memory.hpp>
-
 #include <benchmark/benchmark.h>
 
 #include <algorithm>
@@ -63,15 +61,11 @@ namespace
 			std::list<int> data_copy(data);
 			state.ResumeTiming();
 
-			mem_begin_measuring_section();
-
 			merge_sort(data_copy);
 			assert(std::ranges::is_sorted(data_copy));
-
-			mem_end_measuring_section();
 		}
 
-		fill_memory_usage(state, benchmark::Counter::kAvgIterations);
+		state.SetComplexityN(state.range(0));
 	}
 
 	void merge_sort_list(benchmark::State& state)
@@ -102,14 +96,17 @@ namespace
 
 	BENCHMARK(merge_sort_list)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 	BENCHMARK(merge_sort_list_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 	BENCHMARK(merge_sort_list_reverse_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 } // namespace

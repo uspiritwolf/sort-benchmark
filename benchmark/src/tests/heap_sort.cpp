@@ -1,5 +1,3 @@
-#include <core/memory.hpp>
-
 #include <benchmark/benchmark.h>
 
 #include <algorithm>
@@ -71,15 +69,11 @@ namespace
 			std::vector<int> data_copy(data);
 			state.ResumeTiming();
 
-			mem_begin_measuring_section();
-
 			heap_sort(data_copy.begin(), data_copy.end());
 			assert(std::ranges::is_sorted(data_copy));
-
-			mem_end_measuring_section();
 		}
 
-		fill_memory_usage(state, benchmark::Counter::kAvgIterations);
+		state.SetComplexityN(state.range(0));
 	}
 
 	void heap_sort_vector(benchmark::State& state)
@@ -110,14 +104,17 @@ namespace
 
 	BENCHMARK(heap_sort_vector)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 	BENCHMARK(heap_sort_vector_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 	BENCHMARK(heap_sort_vector_reverse_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6);
+		->Range(1024, 1024 << 6)
+		->Complexity();
 
 } // namespace
