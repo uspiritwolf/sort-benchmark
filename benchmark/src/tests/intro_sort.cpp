@@ -13,6 +13,8 @@
 
 namespace
 {
+	constexpr int insertion_sort_threshold = 16;
+
 	template <typename Iter>
 	void insertion_sort(Iter first, Iter last)
 	{
@@ -147,7 +149,7 @@ namespace
 		std::vector<PendingPartition> pending;
 		for (;;)
 		{
-			while (size > 16)
+			while (size > insertion_sort_threshold)
 			{
 				if (depth == 0)
 				{
