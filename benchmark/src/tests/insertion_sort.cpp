@@ -79,17 +79,17 @@ namespace
 
 	BENCHMARK(insertion_sort_random)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 4096)
 		->Complexity();
 
 	BENCHMARK(insertion_sort_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 65536)
 		->Complexity();
 
 	BENCHMARK(insertion_sort_reverse_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 4096)
 		->Complexity();
 
 } // namespace

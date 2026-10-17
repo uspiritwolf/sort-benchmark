@@ -73,22 +73,22 @@ namespace
 
 	BENCHMARK(std_sort_vector)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 65536)
 		->Complexity();
 
 	BENCHMARK(std_sort_vector_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 65536)
 		->Complexity();
 
 	BENCHMARK(std_sort_vector_reverse_sorted)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 65536)
 		->Complexity();
 
 	BENCHMARK(std_sort_list)
 		->RangeMultiplier(2)
-		->Range(1024, 1024 << 6)
+		->Range(128, 65536)
 		->Complexity();
 
 } // namespace
