@@ -109,7 +109,7 @@ namespace
 		qs_impl(first, last, std::distance(first, last));
 	}
 
-	void run_quick_sort_vector(benchmark::State& state, const std::vector<int>& data)
+	void run_quick_sort(benchmark::State& state, const std::vector<int>& data)
 	{
 		for (auto _ : state)
 		{
@@ -124,43 +124,43 @@ namespace
 		state.SetComplexityN(state.range(0));
 	}
 
-	void quick_sort_vector(benchmark::State& state)
+	void quick_sort_random(benchmark::State& state)
 	{
 		std::mt19937 rng(std::random_device{}());
 
 		std::vector<int> data(state.range(0));
 		std::ranges::generate(data, rng);
 
-		run_quick_sort_vector(state, data);
+		run_quick_sort(state, data);
 	}
 
-	void quick_sort_vector_sorted(benchmark::State& state)
+	void quick_sort_sorted(benchmark::State& state)
 	{
 		std::vector<int> data(state.range(0));
 		std::ranges::iota(data, 0);
 
-		run_quick_sort_vector(state, data);
+		run_quick_sort(state, data);
 	}
 
-	void quick_sort_vector_reverse_sorted(benchmark::State& state)
+	void quick_sort_reverse_sorted(benchmark::State& state)
 	{
 		std::vector<int> data(state.range(0));
 		std::ranges::iota(std::views::reverse(data), 0);
 
-		run_quick_sort_vector(state, data);
+		run_quick_sort(state, data);
 	}
 
-	BENCHMARK(quick_sort_vector)
+	BENCHMARK(quick_sort_random)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();
 
-	BENCHMARK(quick_sort_vector_sorted)
+	BENCHMARK(quick_sort_sorted)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();
 
-	BENCHMARK(quick_sort_vector_reverse_sorted)
+	BENCHMARK(quick_sort_reverse_sorted)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();

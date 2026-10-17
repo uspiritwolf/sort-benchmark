@@ -61,7 +61,7 @@ namespace
 		}
 	}
 
-	void run_heap_sort_vector(benchmark::State& state, const std::vector<int>& data)
+	void run_heap_sort(benchmark::State& state, const std::vector<int>& data)
 	{
 		for (auto _ : state)
 		{
@@ -76,43 +76,43 @@ namespace
 		state.SetComplexityN(state.range(0));
 	}
 
-	void heap_sort_vector(benchmark::State& state)
+	void heap_sort_random(benchmark::State& state)
 	{
 		std::mt19937 rng(std::random_device{}());
 
 		std::vector<int> data(state.range(0));
 		std::ranges::generate(data, rng);
 
-		run_heap_sort_vector(state, data);
+		run_heap_sort(state, data);
 	}
 
-	void heap_sort_vector_sorted(benchmark::State& state)
+	void heap_sort_sorted(benchmark::State& state)
 	{
 		std::vector<int> data(state.range(0));
 		std::ranges::iota(data, 0);
 
-		run_heap_sort_vector(state, data);
+		run_heap_sort(state, data);
 	}
 
-	void heap_sort_vector_reverse_sorted(benchmark::State& state)
+	void heap_sort_reverse_sorted(benchmark::State& state)
 	{
 		std::vector<int> data(state.range(0));
 		std::ranges::iota(std::views::reverse(data), 0);
 
-		run_heap_sort_vector(state, data);
+		run_heap_sort(state, data);
 	}
 
-	BENCHMARK(heap_sort_vector)
+	BENCHMARK(heap_sort_random)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();
 
-	BENCHMARK(heap_sort_vector_sorted)
+	BENCHMARK(heap_sort_sorted)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();
 
-	BENCHMARK(heap_sort_vector_reverse_sorted)
+	BENCHMARK(heap_sort_reverse_sorted)
 		->RangeMultiplier(2)
 		->Range(1024, 1024 << 6)
 		->Complexity();

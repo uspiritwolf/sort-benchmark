@@ -94,12 +94,12 @@
 				"env": {}
 			},
 			{
-				"name": "Launch (insertion_sort_vector)",
+				"name": "Launch (insertion_sort)",
 				"type": "lldb-dap",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=insertion_sort_vector.*"
+					"--benchmark_filter=insertion_sort*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
@@ -138,12 +138,12 @@
 				"env": {}
 			},
 			{
-				"name": "Launch (merge_sort_vector)",
+				"name": "Launch (merge_sort)",
 				"type": "lldb-dap",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=merge_sort_vector.*"
+					"--benchmark_filter=merge_sort*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
@@ -160,12 +160,12 @@
 				"env": {}
 			},
 			{
-				"name": "Launch (radix_sort_vector)",
+				"name": "Launch (radix_sort)",
 				"type": "lldb-dap",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
-					"--benchmark_filter=radix_sort_vector.*"
+					"--benchmark_filter=radix_sort*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
@@ -182,45 +182,23 @@
 				"env": {}
 			},
 			{
+				"name": "Launch (tree_sort)",
+				"type": "lldb-dap",
+				"request": "launch",
+				"program": "${command:cmake.launchTargetPath}",
+				"args": [
+					"--benchmark_filter=tree_sort*"
+				],
+				"cwd": "${command:cmake.launchTargetDirectory}",
+				"env": {}
+			},
+			{
 				"name": "Launch (std_sort)",
 				"type": "lldb-dap",
 				"request": "launch",
 				"program": "${command:cmake.launchTargetPath}",
 				"args": [
 					"--benchmark_filter=std_sort*"
-				],
-				"cwd": "${command:cmake.launchTargetDirectory}",
-				"env": {}
-			},
-			{
-				"name": "Launch (insertion_sort_list)",
-				"type": "lldb-dap",
-				"request": "launch",
-				"program": "${command:cmake.launchTargetPath}",
-				"args": [
-					"--benchmark_filter=insertion_sort_list.*"
-				],
-				"cwd": "${command:cmake.launchTargetDirectory}",
-				"env": {}
-			},
-			{
-				"name": "Launch (merge_sort_list)",
-				"type": "lldb-dap",
-				"request": "launch",
-				"program": "${command:cmake.launchTargetPath}",
-				"args": [
-					"--benchmark_filter=merge_sort_list.*"
-				],
-				"cwd": "${command:cmake.launchTargetDirectory}",
-				"env": {}
-			},
-			{
-				"name": "Launch (radix_sort_list)",
-				"type": "lldb-dap",
-				"request": "launch",
-				"program": "${command:cmake.launchTargetPath}",
-				"args": [
-					"--benchmark_filter=radix_sort_list.*"
 				],
 				"cwd": "${command:cmake.launchTargetDirectory}",
 				"env": {}
