@@ -25,7 +25,7 @@ namespace
 		state.SetComplexityN(state.range(0));
 	}
 
-	void std_sort_vector(benchmark::State& state)
+	void std_sort_vector_random(benchmark::State& state)
 	{
 		std::mt19937 rng(std::random_device{}());
 
@@ -51,17 +51,12 @@ namespace
 		run_std_sort_vector(state, data);
 	}
 
-	void std_sort_list(benchmark::State& state)
+	void run_std_sort_list(benchmark::State& state, const std::list<int>& data)
 	{
-		std::mt19937 rng(std::random_device{}());
-
-		std::list<int> origin_data(state.range(0));
-		std::ranges::generate(origin_data, rng);
-
 		for (auto _ : state)
 		{
 			state.PauseTiming();
-			std::list<int> data_copy(origin_data);
+			std::list<int> data_copy(data);
 			state.ResumeTiming();
 
 			data_copy.sort();
@@ -71,7 +66,33 @@ namespace
 		state.SetComplexityN(state.range(0));
 	}
 
-	BENCHMARK(std_sort_vector)
+	void std_sort_list_random(benchmark::State& state)
+	{
+		std::mt19937 rng(std::random_device{}());
+
+		std::list<int> data(state.range(0));
+		std::ranges::generate(data, rng);
+
+		run_std_sort_list(state, data);
+	}
+
+	void std_sort_list_sorted(benchmark::State& state)
+	{
+		std::list<int> data(state.range(0));
+		std::ranges::iota(data, 0);
+
+		run_std_sort_list(state, data);
+	}
+
+	void std_sort_list_reverse_sorted(benchmark::State& state)
+	{
+		std::list<int> data(state.range(0));
+		std::ranges::iota(std::views::reverse(data), 0);
+
+		run_std_sort_list(state, data);
+	}
+
+	BENCHMARK(std_sort_vector_random)
 		->RangeMultiplier(2)
 		->Range(128, 65536)
 		->Complexity();
@@ -86,7 +107,17 @@ namespace
 		->Range(128, 65536)
 		->Complexity();
 
-	BENCHMARK(std_sort_list)
+	BENCHMARK(std_sort_list_random)
+		->RangeMultiplier(2)
+		->Range(128, 65536)
+		->Complexity();
+
+	BENCHMARK(std_sort_list_sorted)
+		->RangeMultiplier(2)
+		->Range(128, 65536)
+		->Complexity();
+
+	BENCHMARK(std_sort_list_reverse_sorted)
 		->RangeMultiplier(2)
 		->Range(128, 65536)
 		->Complexity();
