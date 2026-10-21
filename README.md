@@ -11,7 +11,9 @@ compared against the theoretical complexity of each algorithm.
 ## What is benchmarked
 
 Every algorithm is run on three kinds of input — **random**, **already sorted** and
-**reverse-sorted** — for sizes from 128 to 65 536 elements (doubling each step).
+**reverse-sorted** — starting at 128 elements and doubling each step. Bubble sort,
+selection sort, and the random/reverse-sorted variants of gnome and insertion sort
+stop at 4 096; most other series reach 65 536, and radix sort reaches 262 144.
 Google Benchmark's complexity estimator reports the best-fitting Big-O and RMS error for each series.
 
 | Benchmark prefix   | Algorithm                                   |
@@ -158,6 +160,98 @@ access to perf events for non-root users. Either run the tool with `sudo` or low
 ```sh
 sudo sysctl kernel.perf_event_paranoid=1
 ```
+
+## Generating report images
+
+The Python report generator builds the suite, runs **all** benchmarks with
+`CYCLES,INSTRUCTIONS`, validates the native CSV, and generates PNG tables and
+plots for use in a LaTeX report. It is run with [uv](https://docs.astral.sh/uv/):
+Python 3.10+ and Matplotlib are declared inline in the script (PEP 723), so uv
+creates and caches an isolated environment automatically — no manual
+`pip install` or virtual environment is needed:
+
+```sh
+uv run benchmark_report.py
+# or, using the uv shebang:
+./benchmark_report.py
+```
+
+No display server is needed (the script uses Agg).
+The script resolves paths from its own location, so it can also run from another
+working directory. It does not change the sorting implementations or edit LaTeX.
+The full measurement run can take a while.
+
+Outputs:
+
+| Path | Purpose |
+|------|---------|
+| `docs/result/benchmark_result.csv` | Native Google Benchmark output, including timings, counters, Big-O and RMS |
+| `docs/result/benchmark_complexity.png` | Algorithms versus Random, Sorted and Reverse-sorted input, with color-coded empirical Big-O |
+| `docs/result/benchmark_rms.png` | Normalized CPU model fitting error in percent |
+| `docs/result/benchmark_overview_<input>_<scale>.png` | All algorithms, separately for each input distribution |
+| `docs/result/benchmark_group_<input>_<class>_<scale>.png` | Comparisons by fitted complexity, or singleton versus nearest fitted classes |
+
+`<input>` is `random`, `sorted`, or `reverse_sorted`; `<scale>` is `linear` or
+`loglog`. Class names are `constant`, `log_n`, `n`, `n_log_n`, `n_squared`, and
+`n_cubed`. The set of group plots depends on the measured fits. For a singleton
+class, comparators are all algorithms in the nearest available class by position
+in that order; equally close classes are both included. If there are no
+comparators at all, the script warns and retains only the overview.
+
+To regenerate images from the existing CSV without building or measuring:
+
+```sh
+uv run benchmark_report.py --plot-only
+```
+
+### Reading the figures
+
+- Every time plot uses **CPU time per iteration**, in nanoseconds. This reduces
+  waiting-related noise compared with wall-clock time, but does not remove cache,
+  CPU frequency, or scheduling effects.
+- Both **linear** and **log-log** views are produced: the former shows absolute
+  differences, the latter makes disparate magnitudes and growth easier to see.
+- Lines with circles connect actual measurements only; there is **no
+  extrapolation**. Each plot is cropped to the N range measured by **all**
+  algorithms on it (largest minimum N to smallest maximum N). For example, an
+  overview that includes quadratic algorithms stops at N = 4 096, while a group
+  of fast algorithms can reach 65 536.
+- On linear axes, small sizes are squashed into the bottom-left corner and may
+  look like points at (0, 0); there is no N = 0 benchmark.
+- Images carry only a short title, axis labels and a legend; explanations go
+  into the LaTeX captions.
+- Big-O is an **empirical fit over tested sizes**, not a proven asymptotic bound.
+  Reverse-sorted input is **not necessarily the worst case** for an implementation.
+  RMS is root-mean-square residual divided by mean measured time; it describes
+  fit quality.
+- Complexity colors are a chosen rubric: Random and Reverse-sorted are green
+  through O(N log N); Sorted is green only through O(N). Remaining subquadratic
+  fits are yellow, and O(N²) or higher is red.
+
+The module docstring and function documentation in `benchmark_report.py` preserve
+these methodological explanations for future report writing and AI-assisted
+analysis. The parser handles the context preamble and the unusual RMS encoding
+in this repository's **Google Benchmark v1.9.5** CSV. Plot-only is intended for
+CSV produced by this workflow, with the default Big-O coefficient unit fixed to
+nanoseconds. Repeated samples and statistical aggregate rows are explicitly
+rejected rather than silently averaged.
+
+Example insertion from `docs/main.tex` (with `graphicx` loaded):
+
+```tex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{result/benchmark_overview_random_loglog.png}
+  \caption{CPU time on random input over the N range measured by all algorithms.}
+\end{figure}
+```
+
+### Failure handling
+
+Both hardware counters must be present in every measurement row. If perf
+permissions prevent collection, the script stops with an explanation (see the
+hardware-counter section above). On any failure the previous CSV and images are
+kept unchanged.
 
 ## Example output
 

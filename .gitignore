@@ -1,2 +1,5 @@
 .build/
 out/
+.venv/
+__pycache__/
+docs/result/
