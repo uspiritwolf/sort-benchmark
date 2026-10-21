@@ -1,0 +1,52 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"latex-workshop.latex.outDir": ".build",
+		"latex-workshop.latex.recipes": [
+			{
+				"name": "latexmk (XeLaTeX)",
+				"tools": [
+					"latexmk"
+				]
+			}
+		],
+		"latex-workshop.latex.tools": [
+			{
+				"name": "latexmk",
+				"command": "latexmk",
+				"args": [
+					"-xelatex",
+					"-synctex=1",
+					"-shell-escape",
+					"-interaction=nonstopmode",
+					"-file-line-error",
+					"-output-directory=%OUTDIR%",
+					"%DOC%"
+				]
+			},
+			{
+				"name": "biber",
+				"command": "biber",
+				"args": [
+					"--output-directory=%OUTDIR%",
+					"%DOCFILE%"
+				]
+			},
+			{
+				"name": "makeglossaries",
+				"command": "makeglossaries",
+				"args": [
+					"-d",
+					".build",
+					"%DOCFILE%"
+				]
+			}
+		],
+		"latex-workshop.latex.recipe.default": "latexmk (XeLaTeX)",
+		"latex-workshop.formatting.latex": "latexindent"
+	}
+}
