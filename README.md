@@ -50,7 +50,7 @@ The CMake presets are written for **Linux only**.
 ### Quick way
 
 ```sh
-./build.sh                         # release-linux (default)
+./build.sh                # release-linux (default)
 ./build.sh debug-linux    # debug build
 ```
 
