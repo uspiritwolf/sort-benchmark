@@ -6,3 +6,21 @@
 % ulem provides \uline for underlining when a project needs it. The normalem
 % option prevents the package from changing LaTeX's standard \emph behavior.
 \RequirePackage[normalem]{ulem}
+
+% minted highlights code listings via Pygments; it requires -shell-escape.
+\RequirePackage{minted}
+\setminted{
+  fontsize=\small,
+  breaklines,
+  frame=lines,
+  framesep=2mm,
+  tabsize=4
+}
+\renewcommand{\listingscaption}{Лістинг}
+\floatname{listing}{\listingscaption}
+
+\RequirePackage{caption}
+\captionsetup{labelsep=endash}
+
+% Allow slightly looser lines instead of overfull boxes around monospaced terms.
+\setlength{\emergencystretch}{3em}
