@@ -204,6 +204,16 @@ To regenerate images from the existing CSV without building or measuring:
 uv run benchmark_report.py --plot-only
 ```
 
+### Example images
+
+Empirical Big-O of each algorithm for Random, Sorted and Reverse-sorted input:
+
+![Empirical complexity table](docs/result/benchmark_complexity.png)
+
+CPU time of all algorithms on random input (log-log scale):
+
+![Random input overview, log-log](docs/result/benchmark_overview_random_loglog.png)
+
 ### Reading the figures
 
 - Every time plot uses **CPU time per iteration**, in nanoseconds. This reduces
